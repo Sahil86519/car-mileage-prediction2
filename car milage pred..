@@ -1,0 +1,1254 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Sahil86519/car-mileage-prediction2/blob/main/car%20milage%20pred..\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 12,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "kOTdwDHjQYSN",
+        "outputId": "96ce1992-2782-43b1-fb3f-73c65689d36d"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "--- HEAD ---\n",
+            "    mpg  cylinders  displacement  horsepower  weight  acceleration  \\\n",
+            "0  18.0          8         307.0       130.0    3504          12.0   \n",
+            "1  15.0          8         350.0       165.0    3693          11.5   \n",
+            "2  18.0          8         318.0       150.0    3436          11.0   \n",
+            "3  16.0          8         304.0       150.0    3433          12.0   \n",
+            "4  17.0          8         302.0       140.0    3449          10.5   \n",
+            "\n",
+            "   model year  origin                   car name  \n",
+            "0          70       1  chevrolet chevelle malibu  \n",
+            "1          70       1          buick skylark 320  \n",
+            "2          70       1         plymouth satellite  \n",
+            "3          70       1              amc rebel sst  \n",
+            "4          70       1                ford torino  \n",
+            "\n",
+            "--- INFO ---\n",
+            "<class 'pandas.core.frame.DataFrame'>\n",
+            "RangeIndex: 398 entries, 0 to 397\n",
+            "Data columns (total 9 columns):\n",
+            " #   Column        Non-Null Count  Dtype  \n",
+            "---  ------        --------------  -----  \n",
+            " 0   mpg           398 non-null    float64\n",
+            " 1   cylinders     398 non-null    int64  \n",
+            " 2   displacement  398 non-null    float64\n",
+            " 3   horsepower    392 non-null    float64\n",
+            " 4   weight        398 non-null    int64  \n",
+            " 5   acceleration  398 non-null    float64\n",
+            " 6   model year    398 non-null    int64  \n",
+            " 7   origin        398 non-null    int64  \n",
+            " 8   car name      398 non-null    object \n",
+            "dtypes: float64(4), int64(4), object(1)\n",
+            "memory usage: 28.1+ KB\n"
+          ]
+        }
+      ],
+      "source": [
+        "import pandas as pd\n",
+        "\n",
+        "# Load the data\n",
+        "filename = \"auto-mpg (1) (1) (2).csv\"\n",
+        "df = pd.read_csv(filename)\n",
+        "\n",
+        "# Inspect the data\n",
+        "print(\"--- HEAD ---\")\n",
+        "print(df.head())\n",
+        "print(\"\\n--- INFO ---\")\n",
+        "df.info()"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 13,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "-G_D-KsKeFZF",
+        "outputId": "f3ae5b0a-4067-45b6-e54c-d14fdfe9b3f2"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "<class 'pandas.core.frame.DataFrame'>\n",
+            "RangeIndex: 398 entries, 0 to 397\n",
+            "Data columns (total 9 columns):\n",
+            " #   Column        Non-Null Count  Dtype  \n",
+            "---  ------        --------------  -----  \n",
+            " 0   mpg           398 non-null    float64\n",
+            " 1   cylinders     398 non-null    int64  \n",
+            " 2   displacement  398 non-null    float64\n",
+            " 3   horsepower    392 non-null    float64\n",
+            " 4   weight        398 non-null    int64  \n",
+            " 5   acceleration  398 non-null    float64\n",
+            " 6   model year    398 non-null    int64  \n",
+            " 7   origin        398 non-null    int64  \n",
+            " 8   car name      398 non-null    object \n",
+            "dtypes: float64(4), int64(4), object(1)\n",
+            "memory usage: 28.1+ KB\n"
+          ]
+        }
+      ],
+      "source": [
+        "df.info()"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 14,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "3LPP1_TSetYt",
+        "outputId": "1a21710d-0e46-430f-b086-7b7c47c9ca3e"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "<class 'pandas.core.frame.DataFrame'>\n",
+            "RangeIndex: 398 entries, 0 to 397\n",
+            "Data columns (total 9 columns):\n",
+            " #   Column        Non-Null Count  Dtype  \n",
+            "---  ------        --------------  -----  \n",
+            " 0   mpg           398 non-null    float64\n",
+            " 1   cylinders     398 non-null    int64  \n",
+            " 2   displacement  398 non-null    float64\n",
+            " 3   horsepower    398 non-null    float64\n",
+            " 4   weight        398 non-null    int64  \n",
+            " 5   acceleration  398 non-null    float64\n",
+            " 6   model year    398 non-null    int64  \n",
+            " 7   origin        398 non-null    int64  \n",
+            " 8   car name      398 non-null    object \n",
+            "dtypes: float64(4), int64(4), object(1)\n",
+            "memory usage: 28.1+ KB\n"
+          ]
+        }
+      ],
+      "source": [
+        "import numpy as np\n",
+        "\n",
+        "# 1. Replace '?' with NaN (Not a Number)\n",
+        "df['horsepower'] = df['horsepower'].replace('?', np.nan)\n",
+        "\n",
+        "# 2. Convert horsepower column data type from text to float (number)\n",
+        "df['horsepower'] = df['horsepower'].astype(float)\n",
+        "\n",
+        "# 3. Fill the missing values with the median of the horsepower column\n",
+        "df['horsepower'] = df['horsepower'].fillna(df['horsepower'].median())\n",
+        "\n",
+        "# 4. Check the updated data structure\n",
+        "df.info()"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 15,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 300
+        },
+        "id": "gt3TVrHofzGO",
+        "outputId": "cd16bf78-fc5c-4c25-96d1-f115006b7935"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "              mpg   cylinders  displacement  horsepower       weight  \\\n",
+              "count  398.000000  398.000000    398.000000  398.000000   398.000000   \n",
+              "mean    23.514573    5.454774    193.425879  104.304020  2970.424623   \n",
+              "std      7.815984    1.701004    104.269838   38.222625   846.841774   \n",
+              "min      9.000000    3.000000     68.000000   46.000000  1613.000000   \n",
+              "25%     17.500000    4.000000    104.250000   76.000000  2223.750000   \n",
+              "50%     23.000000    4.000000    148.500000   93.500000  2803.500000   \n",
+              "75%     29.000000    8.000000    262.000000  125.000000  3608.000000   \n",
+              "max     46.600000    8.000000    455.000000  230.000000  5140.000000   \n",
+              "\n",
+              "       acceleration  model year      origin  \n",
+              "count    398.000000  398.000000  398.000000  \n",
+              "mean      15.568090   76.010050    1.572864  \n",
+              "std        2.757689    3.697627    0.802055  \n",
+              "min        8.000000   70.000000    1.000000  \n",
+              "25%       13.825000   73.000000    1.000000  \n",
+              "50%       15.500000   76.000000    1.000000  \n",
+              "75%       17.175000   79.000000    2.000000  \n",
+              "max       24.800000   82.000000    3.000000  "
+            ],
+            "text/html": [
+              "\n",
+              "  <div id=\"df-d57351e4-1b0e-4b11-8ad3-332ccb7332ce\" class=\"colab-df-container\">\n",
+              "    <div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>mpg</th>\n",
+              "      <th>cylinders</th>\n",
+              "      <th>displacement</th>\n",
+              "      <th>horsepower</th>\n",
+              "      <th>weight</th>\n",
+              "      <th>acceleration</th>\n",
+              "      <th>model year</th>\n",
+              "      <th>origin</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>count</th>\n",
+              "      <td>398.000000</td>\n",
+              "      <td>398.000000</td>\n",
+              "      <td>398.000000</td>\n",
+              "      <td>398.000000</td>\n",
+              "      <td>398.000000</td>\n",
+              "      <td>398.000000</td>\n",
+              "      <td>398.000000</td>\n",
+              "      <td>398.000000</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>mean</th>\n",
+              "      <td>23.514573</td>\n",
+              "      <td>5.454774</td>\n",
+              "      <td>193.425879</td>\n",
+              "      <td>104.304020</td>\n",
+              "      <td>2970.424623</td>\n",
+              "      <td>15.568090</td>\n",
+              "      <td>76.010050</td>\n",
+              "      <td>1.572864</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>std</th>\n",
+              "      <td>7.815984</td>\n",
+              "      <td>1.701004</td>\n",
+              "      <td>104.269838</td>\n",
+              "      <td>38.222625</td>\n",
+              "      <td>846.841774</td>\n",
+              "      <td>2.757689</td>\n",
+              "      <td>3.697627</td>\n",
+              "      <td>0.802055</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>min</th>\n",
+              "      <td>9.000000</td>\n",
+              "      <td>3.000000</td>\n",
+              "      <td>68.000000</td>\n",
+              "      <td>46.000000</td>\n",
+              "      <td>1613.000000</td>\n",
+              "      <td>8.000000</td>\n",
+              "      <td>70.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>25%</th>\n",
+              "      <td>17.500000</td>\n",
+              "      <td>4.000000</td>\n",
+              "      <td>104.250000</td>\n",
+              "      <td>76.000000</td>\n",
+              "      <td>2223.750000</td>\n",
+              "      <td>13.825000</td>\n",
+              "      <td>73.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>50%</th>\n",
+              "      <td>23.000000</td>\n",
+              "      <td>4.000000</td>\n",
+              "      <td>148.500000</td>\n",
+              "      <td>93.500000</td>\n",
+              "      <td>2803.500000</td>\n",
+              "      <td>15.500000</td>\n",
+              "      <td>76.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>75%</th>\n",
+              "      <td>29.000000</td>\n",
+              "      <td>8.000000</td>\n",
+              "      <td>262.000000</td>\n",
+              "      <td>125.000000</td>\n",
+              "      <td>3608.000000</td>\n",
+              "      <td>17.175000</td>\n",
+              "      <td>79.000000</td>\n",
+              "      <td>2.000000</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>max</th>\n",
+              "      <td>46.600000</td>\n",
+              "      <td>8.000000</td>\n",
+              "      <td>455.000000</td>\n",
+              "      <td>230.000000</td>\n",
+              "      <td>5140.000000</td>\n",
+              "      <td>24.800000</td>\n",
+              "      <td>82.000000</td>\n",
+              "      <td>3.000000</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>\n",
+              "    <div class=\"colab-df-buttons\">\n",
+              "\n",
+              "  <div class=\"colab-df-container\">\n",
+              "    <button class=\"colab-df-convert\" onclick=\"convertToInteractive('df-d57351e4-1b0e-4b11-8ad3-332ccb7332ce')\"\n",
+              "            title=\"Convert this dataframe to an interactive table.\"\n",
+              "            style=\"display:none;\">\n",
+              "\n",
+              "  <svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\">\n",
+              "    <path d=\"M120-120v-720h720v720H120Zm60-500h600v-160H180v160Zm220 220h160v-160H400v160Zm0 220h160v-160H400v160ZM180-400h160v-160H180v160Zm440 0h160v-160H620v160ZM180-180h160v-160H180v160Zm440 0h160v-160H620v160Z\"/>\n",
+              "  </svg>\n",
+              "    </button>\n",
+              "\n",
+              "  <style>\n",
+              "    .colab-df-container {\n",
+              "      display:flex;\n",
+              "      gap: 12px;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-convert {\n",
+              "      background-color: #E8F0FE;\n",
+              "      border: none;\n",
+              "      border-radius: 50%;\n",
+              "      cursor: pointer;\n",
+              "      display: none;\n",
+              "      fill: #1967D2;\n",
+              "      height: 32px;\n",
+              "      padding: 0 0 0 0;\n",
+              "      width: 32px;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-convert:hover {\n",
+              "      background-color: #E2EBFA;\n",
+              "      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);\n",
+              "      fill: #174EA6;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-buttons div {\n",
+              "      margin-bottom: 4px;\n",
+              "    }\n",
+              "\n",
+              "    [theme=dark] .colab-df-convert {\n",
+              "      background-color: #3B4455;\n",
+              "      fill: #D2E3FC;\n",
+              "    }\n",
+              "\n",
+              "    [theme=dark] .colab-df-convert:hover {\n",
+              "      background-color: #434B5C;\n",
+              "      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);\n",
+              "      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));\n",
+              "      fill: #FFFFFF;\n",
+              "    }\n",
+              "  </style>\n",
+              "\n",
+              "    <script>\n",
+              "      const buttonEl =\n",
+              "        document.querySelector('#df-d57351e4-1b0e-4b11-8ad3-332ccb7332ce button.colab-df-convert');\n",
+              "      buttonEl.style.display =\n",
+              "        google.colab.kernel.accessAllowed ? 'block' : 'none';\n",
+              "\n",
+              "      async function convertToInteractive(key) {\n",
+              "        const element = document.querySelector('#df-d57351e4-1b0e-4b11-8ad3-332ccb7332ce');\n",
+              "        const dataTable =\n",
+              "          await google.colab.kernel.invokeFunction('convertToInteractive',\n",
+              "                                                    [key], {});\n",
+              "        if (!dataTable) return;\n",
+              "\n",
+              "        const docLinkHtml = 'Like what you see? Visit the ' +\n",
+              "          '<a target=\"_blank\" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'\n",
+              "          + ' to learn more about interactive tables.';\n",
+              "        element.innerHTML = '';\n",
+              "        dataTable['output_type'] = 'display_data';\n",
+              "        await google.colab.output.renderOutput(dataTable, element);\n",
+              "        const docLink = document.createElement('div');\n",
+              "        docLink.innerHTML = docLinkHtml;\n",
+              "        element.appendChild(docLink);\n",
+              "      }\n",
+              "    </script>\n",
+              "  </div>\n",
+              "\n",
+              "\n",
+              "    </div>\n",
+              "  </div>\n"
+            ],
+            "application/vnd.google.colaboratory.intrinsic+json": {
+              "type": "dataframe",
+              "summary": "{\n  \"name\": \"df\",\n  \"rows\": 8,\n  \"fields\": [\n    {\n      \"column\": \"mpg\",\n      \"properties\": {\n        \"dtype\": \"number\",\n        \"std\": 133.37523833494922,\n        \"min\": 7.815984312565782,\n        \"max\": 398.0,\n        \"num_unique_values\": 8,\n        \"samples\": [\n          23.514572864321607,\n          23.0,\n          398.0\n        ],\n        \"semantic_type\": \"\",\n        \"description\": \"\"\n      }\n    },\n    {\n      \"column\": \"cylinders\",\n      \"properties\": {\n        \"dtype\": \"number\",\n        \"std\": 139.0071020301553,\n        \"min\": 1.7010042445332094,\n        \"max\": 398.0,\n        \"num_unique_values\": 6,\n        \"samples\": [\n          398.0,\n          5.454773869346734,\n          8.0\n        ],\n        \"semantic_type\": \"\",\n        \"description\": \"\"\n      }\n    },\n    {\n      \"column\": \"displacement\",\n      \"properties\": {\n        \"dtype\": \"number\",\n        \"std\": 143.57617465667641,\n        \"min\": 68.0,\n        \"max\": 455.0,\n        \"num_unique_values\": 8,\n        \"samples\": [\n          193.42587939698493,\n          148.5,\n          398.0\n        ],\n        \"semantic_type\": \"\",\n        \"description\": \"\"\n      }\n    },\n    {\n      \"column\": \"horsepower\",\n      \"properties\": {\n        \"dtype\": \"number\",\n        \"std\": 120.47881967511262,\n        \"min\": 38.22262486810868,\n        \"max\": 398.0,\n        \"num_unique_values\": 8,\n        \"samples\": [\n          104.30402010050251,\n          93.5,\n          398.0\n        ],\n        \"semantic_type\": \"\",\n        \"description\": \"\"\n      }\n    },\n    {\n      \"column\": \"weight\",\n      \"properties\": {\n        \"dtype\": \"number\",\n        \"std\": 1535.5522437115258,\n        \"min\": 398.0,\n        \"max\": 5140.0,\n        \"num_unique_values\": 8,\n        \"samples\": [\n          2970.424623115578,\n          2803.5,\n          398.0\n        ],\n        \"semantic_type\": \"\",\n        \"description\": \"\"\n      }\n    },\n    {\n      \"column\": \"acceleration\",\n      \"properties\": {\n        \"dtype\": \"number\",\n        \"std\": 135.93788360342714,\n        \"min\": 2.7576889298126757,\n        \"max\": 398.0,\n        \"num_unique_values\": 8,\n        \"samples\": [\n          15.568090452261307,\n          15.5,\n          398.0\n        ],\n        \"semantic_type\": \"\",\n        \"description\": \"\"\n      }\n    },\n    {\n      \"column\": \"model year\",\n      \"properties\": {\n        \"dtype\": \"number\",\n        \"std\": 120.24225119423292,\n        \"min\": 3.697626646732623,\n        \"max\": 398.0,\n        \"num_unique_values\": 8,\n        \"samples\": [\n          76.01005025125629,\n          76.0,\n          398.0\n        ],\n        \"semantic_type\": \"\",\n        \"description\": \"\"\n      }\n    },\n    {\n      \"column\": \"origin\",\n      \"properties\": {\n        \"dtype\": \"number\",\n        \"std\": 140.19214256834297,\n        \"min\": 0.8020548777266163,\n        \"max\": 398.0,\n        \"num_unique_values\": 6,\n        \"samples\": [\n          398.0,\n          1.5728643216080402,\n          3.0\n        ],\n        \"semantic_type\": \"\",\n        \"description\": \"\"\n      }\n    }\n  ]\n}"
+            }
+          },
+          "metadata": {},
+          "execution_count": 15
+        }
+      ],
+      "source": [
+        "# View statistical details of the clean dataset\n",
+        "df.describe()"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 16,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "o8ppS4NrQfqc",
+        "outputId": "e9058d16-30fa-43c9-e505-551fd34738eb"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "              mpg   cylinders  displacement  horsepower       weight  \\\n",
+            "count  398.000000  398.000000    398.000000  398.000000   398.000000   \n",
+            "mean    23.514573    5.454774    193.425879  104.304020  2970.424623   \n",
+            "std      7.815984    1.701004    104.269838   38.222625   846.841774   \n",
+            "min      9.000000    3.000000     68.000000   46.000000  1613.000000   \n",
+            "25%     17.500000    4.000000    104.250000   76.000000  2223.750000   \n",
+            "50%     23.000000    4.000000    148.500000   93.500000  2803.500000   \n",
+            "75%     29.000000    8.000000    262.000000  125.000000  3608.000000   \n",
+            "max     46.600000    8.000000    455.000000  230.000000  5140.000000   \n",
+            "\n",
+            "       acceleration  model year      origin  \n",
+            "count    398.000000  398.000000  398.000000  \n",
+            "mean      15.568090   76.010050    1.572864  \n",
+            "std        2.757689    3.697627    0.802055  \n",
+            "min        8.000000   70.000000    1.000000  \n",
+            "25%       13.825000   73.000000    1.000000  \n",
+            "50%       15.500000   76.000000    1.000000  \n",
+            "75%       17.175000   79.000000    2.000000  \n",
+            "max       24.800000   82.000000    3.000000  \n",
+            "\n",
+            "Missing values:\n",
+            "mpg             0\n",
+            "cylinders       0\n",
+            "displacement    0\n",
+            "horsepower      0\n",
+            "weight          0\n",
+            "acceleration    0\n",
+            "model year      0\n",
+            "origin          0\n",
+            "car name        0\n",
+            "dtype: int64\n"
+          ]
+        }
+      ],
+      "source": [
+        "# Get descriptive statistics\n",
+        "print(df.describe())\n",
+        "\n",
+        "# Check for missing values\n",
+        "print(\"\\nMissing values:\")\n",
+        "print(df.isnull().sum())"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 17,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "PZXwR5JyRASk",
+        "outputId": "886febdf-b8d4-4aa2-dedb-74d9b384a762"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "   cylinders        mpg\n",
+            "0          3  20.550000\n",
+            "1          4  29.286765\n",
+            "2          5  27.366667\n",
+            "3          6  19.985714\n",
+            "4          8  14.963107\n"
+          ]
+        }
+      ],
+      "source": [
+        "# Average mpg by cylinder count\n",
+        "avg_mpg_by_cyl = df.groupby('cylinders')['mpg'].mean().reset_index()\n",
+        "print(avg_mpg_by_cyl)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 18,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "9hRnLAx6RKnd",
+        "outputId": "c5e29d66-e118-42e5-ab7e-7cafa82a783c"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "--- First 5 Rows ---\n",
+            "    mpg  cylinders  displacement  horsepower  weight  acceleration  \\\n",
+            "0  18.0          8         307.0       130.0    3504          12.0   \n",
+            "1  15.0          8         350.0       165.0    3693          11.5   \n",
+            "2  18.0          8         318.0       150.0    3436          11.0   \n",
+            "3  16.0          8         304.0       150.0    3433          12.0   \n",
+            "4  17.0          8         302.0       140.0    3449          10.5   \n",
+            "\n",
+            "   model year  origin                   car name  \n",
+            "0          70       1  chevrolet chevelle malibu  \n",
+            "1          70       1          buick skylark 320  \n",
+            "2          70       1         plymouth satellite  \n",
+            "3          70       1              amc rebel sst  \n",
+            "4          70       1                ford torino  \n",
+            "\n",
+            "--- Data Information ---\n",
+            "<class 'pandas.core.frame.DataFrame'>\n",
+            "RangeIndex: 398 entries, 0 to 397\n",
+            "Data columns (total 9 columns):\n",
+            " #   Column        Non-Null Count  Dtype  \n",
+            "---  ------        --------------  -----  \n",
+            " 0   mpg           398 non-null    float64\n",
+            " 1   cylinders     398 non-null    int64  \n",
+            " 2   displacement  398 non-null    float64\n",
+            " 3   horsepower    392 non-null    float64\n",
+            " 4   weight        398 non-null    int64  \n",
+            " 5   acceleration  398 non-null    float64\n",
+            " 6   model year    398 non-null    int64  \n",
+            " 7   origin        398 non-null    int64  \n",
+            " 8   car name      398 non-null    object \n",
+            "dtypes: float64(4), int64(4), object(1)\n",
+            "memory usage: 28.1+ KB\n"
+          ]
+        }
+      ],
+      "source": [
+        "import pandas as pd\n",
+        "\n",
+        "# Load the dataset\n",
+        "file_name = \"auto-mpg (1) (1) (2).csv\"\n",
+        "df = pd.read_csv(file_name)\n",
+        "\n",
+        "# Display the first 5 rows\n",
+        "print(\"--- First 5 Rows ---\")\n",
+        "print(df.head())\n",
+        "\n",
+        "# Display the data structure and column types\n",
+        "print(\"\\n--- Data Information ---\")\n",
+        "df.info()"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 19,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "9nRgA6cZRVk-",
+        "outputId": "13d478f8-c87b-4392-af3d-47ab3ae6e878"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "\n",
+            "--- Missing Values Count ---\n",
+            "mpg             0\n",
+            "cylinders       0\n",
+            "displacement    0\n",
+            "horsepower      6\n",
+            "weight          0\n",
+            "acceleration    0\n",
+            "model year      0\n",
+            "origin          0\n",
+            "car name        0\n",
+            "dtype: int64\n"
+          ]
+        }
+      ],
+      "source": [
+        "# Check for missing values in each column\n",
+        "print(\"\\n--- Missing Values Count ---\")\n",
+        "print(df.isnull().sum())"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 20,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "zXt2FpXXRaXC",
+        "outputId": "64da008c-90f4-49a4-efee-da26b05e7e50"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "\n",
+            "--- Summary Statistics ---\n",
+            "              mpg   cylinders  displacement  horsepower       weight  \\\n",
+            "count  398.000000  398.000000    398.000000  398.000000   398.000000   \n",
+            "mean    23.514573    5.454774    193.425879  104.304020  2970.424623   \n",
+            "std      7.815984    1.701004    104.269838   38.222625   846.841774   \n",
+            "min      9.000000    3.000000     68.000000   46.000000  1613.000000   \n",
+            "25%     17.500000    4.000000    104.250000   76.000000  2223.750000   \n",
+            "50%     23.000000    4.000000    148.500000   93.500000  2803.500000   \n",
+            "75%     29.000000    8.000000    262.000000  125.000000  3608.000000   \n",
+            "max     46.600000    8.000000    455.000000  230.000000  5140.000000   \n",
+            "\n",
+            "       acceleration  model year      origin  \n",
+            "count    398.000000  398.000000  398.000000  \n",
+            "mean      15.568090   76.010050    1.572864  \n",
+            "std        2.757689    3.697627    0.802055  \n",
+            "min        8.000000   70.000000    1.000000  \n",
+            "25%       13.825000   73.000000    1.000000  \n",
+            "50%       15.500000   76.000000    1.000000  \n",
+            "75%       17.175000   79.000000    2.000000  \n",
+            "max       24.800000   82.000000    3.000000  \n"
+          ]
+        }
+      ],
+      "source": [
+        "# Fill missing horsepower values with the median\n",
+        "df['horsepower'] = df['horsepower'].fillna(df['horsepower'].median())\n",
+        "print(\"\\n--- Summary Statistics ---\")\n",
+        "print(df.describe())"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 21,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "5IA_FSckRsHo",
+        "outputId": "26be5128-4a9f-4fac-abc0-e7b1d7dd8fa5"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "\n",
+            "--- Average MPG by Cylinder Count ---\n",
+            "   cylinders        mpg\n",
+            "0          3  20.550000\n",
+            "1          4  29.286765\n",
+            "2          5  27.366667\n",
+            "3          6  19.985714\n",
+            "4          8  14.963107\n"
+          ]
+        }
+      ],
+      "source": [
+        "# Calculate the average MPG based on the number of cylinders\n",
+        "avg_mpg_by_cyl = df.groupby('cylinders')['mpg'].mean().reset_index()\n",
+        "print(\"\\n--- Average MPG by Cylinder Count ---\")\n",
+        "print(avg_mpg_by_cyl)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 22,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "zLBIXQ35R1bY",
+        "outputId": "2d9c8174-d56e-4e6f-c6bf-3d53da248764"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Summary Statistics of the Fleet:\n",
+            "              mpg   cylinders  displacement  horsepower       weight  \\\n",
+            "count  398.000000  398.000000    398.000000  398.000000   398.000000   \n",
+            "mean    23.514573    5.454774    193.425879  104.304020  2970.424623   \n",
+            "std      7.815984    1.701004    104.269838   38.222625   846.841774   \n",
+            "min      9.000000    3.000000     68.000000   46.000000  1613.000000   \n",
+            "25%     17.500000    4.000000    104.250000   76.000000  2223.750000   \n",
+            "50%     23.000000    4.000000    148.500000   93.500000  2803.500000   \n",
+            "75%     29.000000    8.000000    262.000000  125.000000  3608.000000   \n",
+            "max     46.600000    8.000000    455.000000  230.000000  5140.000000   \n",
+            "\n",
+            "       acceleration  model year      origin  \n",
+            "count    398.000000  398.000000  398.000000  \n",
+            "mean      15.568090   76.010050    1.572864  \n",
+            "std        2.757689    3.697627    0.802055  \n",
+            "min        8.000000   70.000000    1.000000  \n",
+            "25%       13.825000   73.000000    1.000000  \n",
+            "50%       15.500000   76.000000    1.000000  \n",
+            "75%       17.175000   79.000000    2.000000  \n",
+            "max       24.800000   82.000000    3.000000  \n",
+            "\n",
+            "Average Performance by Cylinder Category:\n",
+            "   cylinders        mpg  horsepower       weight\n",
+            "0          3  20.550000   99.250000  2398.500000\n",
+            "1          4  29.286765   78.654412  2308.127451\n",
+            "2          5  27.366667   82.333333  3103.333333\n",
+            "3          6  19.985714  101.410714  3198.226190\n",
+            "4          8  14.963107  158.300971  4114.718447\n"
+          ]
+        }
+      ],
+      "source": [
+        "import pandas as pd\n",
+        "\n",
+        "# 1. Load data\n",
+        "file_name = \"auto-mpg (1) (1) (2).csv\"\n",
+        "df = pd.read_csv(file_name)\n",
+        "\n",
+        "# 2. Clean data (Handle missing horsepower data)\n",
+        "df['horsepower'] = df['horsepower'].fillna(df['horsepower'].median())\n",
+        "\n",
+        "# 3. Summary statistics\n",
+        "print(\"Summary Statistics of the Fleet:\")\n",
+        "print(df.describe())\n",
+        "\n",
+        "# 4. Custom Aggregation\n",
+        "print(\"\\nAverage Performance by Cylinder Category:\")\n",
+        "summary = df.groupby('cylinders').agg({\n",
+        "    'mpg': 'mean',\n",
+        "    'horsepower': 'mean',\n",
+        "    'weight': 'mean'\n",
+        "}).reset_index()\n",
+        "print(summary)"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "DUiaZRT4TK7y"
+      },
+      "source": [
+        "olympics"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 23,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 975
+        },
+        "id": "kfe-48MBTR6N",
+        "outputId": "76788575-3f13-4bad-ea4b-e5c6cb240875"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "✓ Dataset successfully loaded!\n",
+            "\n",
+            "=== FLEET SUMMARY STATISTICS ===\n",
+            "              mpg  horsepower       weight  acceleration\n",
+            "count  398.000000  398.000000   398.000000    398.000000\n",
+            "mean    23.514573  104.304020  2970.424623     15.568090\n",
+            "std      7.815984   38.222625   846.841774      2.757689\n",
+            "min      9.000000   46.000000  1613.000000      8.000000\n",
+            "25%     17.500000   76.000000  2223.750000     13.825000\n",
+            "50%     23.000000   93.500000  2803.500000     15.500000\n",
+            "75%     29.000000  125.000000  3608.000000     17.175000\n",
+            "max     46.600000  230.000000  5140.000000     24.800000\n",
+            "\n",
+            "========================================\n",
+            "\n",
+            "=== AVERAGE PERFORMANCE BY CYLINDER COUNT ===\n",
+            " Cylinders   Avg MPG  Avg Horsepower  Avg Weight (lbs)\n",
+            "         3 20.550000       99.250000       2398.500000\n",
+            "         4 29.286765       78.654412       2308.127451\n",
+            "         5 27.366667       82.333333       3103.333333\n",
+            "         6 19.985714      101.410714       3198.226190\n",
+            "         8 14.963107      158.300971       4114.718447\n",
+            "\n",
+            "========================================\n",
+            "\n",
+            "Generating visualization chart...\n"
+          ]
+        },
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/plain": [
+              "<Figure size 900x500 with 1 Axes>"
+            ],
+            "image/png": "iVBORw0KGgoAAAANSUhEUgAAA3QAAAHjCAYAAABrbF1pAAAAOnRFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHZlcnNpb24zLjEwLjAsIGh0dHBzOi8vbWF0cGxvdGxpYi5vcmcvlHJYcgAAAAlwSFlzAAAPYQAAD2EBqD+naQAAkupJREFUeJzs3XdYFFfbBvB76CBdsYEFRVFQFEWRxIJdBMVeYu89BjWxRH1jYtQUTYy9YO8NK4KKikaNxoaiKAIWsAAiVZC63x98TFiK7i4LC3L/ritXppyZ8yweln12ThEkEokEREREREREVOaoqToAIiIiIiIiUgwTOiIiIiIiojKKCR0REREREVEZxYSOiIiIiIiojGJCR0REREREVEYxoSMiIiIiIiqjmNARERERERGVUUzoiIiIiIiIyigmdERERERERGUUEzoiKlHR0dGYO3cu2rRpAxsbG1hbW8Pa2hrnzp1TdWhFtmrVKvH1dOjQQdXhKFWHDh3E17Zq1SpVh5PPpUuXxPgWLVqksjgK+zldv35dPG5tbY2IiIhijaMstMV79+6JMXp4eKg6nM9SRESEVLu7fv16sdaXnp6Ov/76C127dkWjRo3Een/++WexzL179zB27Fg4OjqiQYMGYpmEhASltduS/n0jUjUNVQdAVJKuX7+O4cOHi/tLly5Fnz59VBiR6lhbW4vbJfVzkEgk+Prrr3H79m25rz1y5Ajmzp37yXJTp07FtGnTFAmv3Hjz5g08PT1x9epVvHz5EhkZGTAyMoKpqSnq1q2Lhg0bYtCgQTAyMlJ1qDKRSCRYsWIFAEBdXR2jR48usFxGRgZ8fX1x5swZBAYG4t27d0hPT4epqSkaNGiAtm3bokePHmXmdZd1dnZ2aNmyJW7cuIHTp09j3LhxsLGxUXVYclu1ahVWr179yXJl6e/NnDlz4OXl9clyO3bsgKOjo7i/atUqbNiwodDy0dHRGDduHOLi4pQRJhH9PyZ0RFRiXr16JZXMtW/fHs2bN4eamhrq1aunwsiU48svv4Senh4AwMDAQMXRFOzBgwcYMWIEEhMTpY6/ffsWb9++RXBwME6fPo22bdtKJTYTJ04Ur7G3ty/RmD/l7NmzCAoKAgA4OzujRo0a+coEBwfDw8MDISEh+c5FRkYiMjIS/v7+iI2NLZYvBGrWrInvvvtO3Dc2NlZ6HWXR8OHDcePGDUgkEvz1119Yv369qkOiIjh58qS4Xb9+fbi5uUFDQwO2trYAgL///ltM5gRBwJAhQ1C9enUAgI6OjtLeQ/n7RuUNEzoiKjGvXr2S2p83bx5q1qyp0L0GDRpU4LWqTDaaNWuGZs2aqax+WSxatEhMzPT09ODi4oIaNWogIyMDz549w61bt/D69et81w0YMKCkQ5XZvn37xG1XV9d850NDQzFs2DCppwL169dH69atYWxsjJiYGNy8eRMPHjwothirVauGMWPGFNv9VS0pKQn6+vpyX9euXTvo6+sjKSkJly5dwps3b1C1atViiLDkTJw4EYaGhvmON27cWAXRKEfu5Ci3vO/Bud/jhw8fjv79+0udf/nypbhdpUoVLFiwQOq8st5DP/ffN6K8mNAR/b+83TFPnz6NkydPwsvLC+/evUO9evXw9ddfo23btnj37h1+//13nD9/HsnJybC1tcXMmTPh4OAgdc+83RorVqyI9evX49GjR9DQ0ICTkxNmzpyJWrVqSV23efNm3L59G6GhoYiNjcX79++hq6uL2rVro2PHjhgxYoT4LWZusbGx2LNnD/z9/fH06VOkpKTAxMQE9evXR9++fdG9e3cMGzYMN27ckLpu7ty5YndGc3NznD9/XqafWWBgIHbs2IGbN28iOjoaGhoaMDc3R+vWrTFy5EipD2a5fxY5OnfuLG4/fvxYpjpzdO/eXaqrT0Hy/pueO3cOly5dwr59+/Ds2TPo6+ujQ4cO+O677/J1s0tJScHatWtx4sQJxMTEoGbNmhg6dChat26NTp06ieVydznK3fUq78+xQ4cO4oeZqVOnon379li1ahVu3bqF9PR02NraYsaMGfnaEJD99GzHjh3w9/fHixcvkJGRgapVq6J169YYN26c+A33pyQlJSEgIEDcX7hwIXr37p2v3L1791ClShWpY3njz3mKVVB7yitvN1hlvR4AeP36Na5duwYA0NTURPv27fOV+f7776WSuRkzZmD8+PEQBEGqXGBgICIjIwEAQ4cOxb///gsAcHNzw/Lly6XK7t69Gz/++CMAwMjICJcvX4a2tnahceZti35+frCwsAAg3b2tZcuWWL58OVatWoULFy4gLi4ONWrUwKhRowpMqh8/fowVK1aIsdrb22PGjBmFxpEjKSkJu3fvxrlz5xAWFobU1FRUqlQJrVq1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xARubm5ijxdtbe1Cl1AgAgBBoug0TkT0SdbW1uL20qVL+Q1bGfLhw4d8TxIA4JdffhGfQunp6eH69etyjzUi5Tp9+rTYralLly5SC/kqy6lTpzBjxgwAQNOmTfN1KyXFnD17Vlzaon379oWu4UZU3mzcuFHsdunq6ooVK1aoOCIqzfiEjoioAMOHD0eNGjXQvHlzVKtWDfHx8bh8+bJU97RBgwYxmSsFunbtCmtrazx+/Bjnz59HRESEwgvW55aQkICgoCDExMRIzZQ5ZMiQIt+bsu3YsQNAdhdSedc9JPrcREdHIzQ0FK9evZIat8j3HPoUJnRERAVITU3FyZMncfLkyQLPOzs7w8PDo4SjooKoqalh5syZGD9+PDIyMrBly5Z8a+ApIigoKN/i5k2bNoWbm1uR703AvXv3xOnZXVxcxJl+icqry5cvY+7cuVLHunXrhubNm6soIiormNARERVg6NCh8PHxwZMnTxAXFweJRAJTU1M0atQIPXv2RNeuXVUdIuXSrl27Ylv8WBAEVKpUCR06dICHh0epmjGxLLOzs1P5gtVEpZGamhqqVq0KV1dXsUsy0cdwDB0REREREVEZxa8ZiYiIiIiIyigmdERERERERGUUEzoiIiIiIqIyigkdERERERFRGcWEjoiIiIiIqIxiQkdERERERFRGMaEjIiIiIiIqo5jQERERERERlVFM6IiIiIiIiMooJnRERERERERlFBM6IiIiIiKiMooJHRERERERURnFhI6IiIiIiKiMYkJHRERERERURmmoOoDS4M6dO5BIJNDU1FR1KEREREREVM6lp6dDEATY29t/siwTOgASiQQSiUTVYRB91sLCwnD16lU8fPgQb9++RUJCAvT09FCvXj24u7vDxsZGqvy1a9fg7e2NZ8+eITMzE9WqVUOHDh3QrVs3qKury1Snv78/7t27h9DQUMTGxiI1NRWVKlVCs2bN0K9fPxgaGkqVT0lJweHDh3H9+nVER0dDR0cH9evXR79+/VC/fn2l/SyIiIiIPkae3ESQMJPB/fv3AQCNGzdWcSREn6+FCxdi//79BZ5TU1PDypUr0aVLFwDAX3/9hTVr1hRY1s3NDcuXL5epzsaNGyMtLa3AcxYWFjh8+DCMjY0BAElJSRg8eDCCg4PzldXU1MTq1avh7OwsU71ERERERSFPfsIxdERUYszM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KCZ0REREREREZRQTOiIiIiIiojKKCR0REREREVEZJXdCl5KSAkdHR2zevLk44iEiIiIiIiIZyZ3Q6erqQl1dHbq6usURDxEREREREclIoRXAu3TpAl9fX3z11VcQBEHZMRERERERUTGKi4uDp6cn7ty5g/v37+PDhw8AgN69e2PZsmWFXnf37l0MHjwYWVlZAIDu3bvjjz/+kKlOiUSC/fv34+DBgwgNDYUgCKhXrx6GDBkCd3f3Aq959+4dNm3ahPPnz+P169fQ0tJC9erV0apVK8ybN0/OV/15Uiihc3V1xaJFizB8+HD0798f5ubm0NHRyVfO1ta2yAESEREREZFyvX79Ghs3bpTrmrS0NMyfP19M5uQ1Z84cHD16VOpYQEAAAgICEBoaihkzZkidCwsLw4gRIxAVFSUeS01NxePHjxESEsKE7v8plNANGzZM3L5582a+8xKJBIIgICgoSPHIiIiIiIioWGhqaqJFixawt7dHTEwMDh8+/MlrNm7ciCdPnkBbWxupqaly1Xft2jUxmatUqRLmzp0LNTU1LF26FFFRUdi4cSM6deoEOzs7AEBGRgamT58uJnOurq7o3LkzDA0N8erVK/z777/yveDPmEIJ3dKlS5UdBxERERERlRArKyvs2rULALB3795PJnQhISFYv349dHR0MGrUKKxbt06u+i5duiRuDx48GG5ubgCAiIgILF++HBKJBAcOHBATurNnzyI4OBgA0K9fP/z8889S9+vfv79c9X/OFEroevfurew4iIiIiIioFMrKysL8+fORnp4ODw8PmJiYyH2PpKQkcTv35Ip6enri9u3bt8XtCxcuiNtGRkbo27cvQkNDoa+vj06dOsHDwwNGRkZyx/E5KvI6dFFRUXj06BGSk5OVEQ8REREREZUiu3fvxp07d2Bra4uRI0cqdA9LS0tx+/jx43jz5g0iIyPh5eUlHn/9+rW4HRISIm57enoiMDAQKSkpiI6Oxt69ezFs2DCkpKQoFMvnRuGE7ty5c+jWrRvatWuH3r17IyAgAED2TDS9evXC2bNnlRYkERERERGVvFevXmHFihXQ0NDAkiVLoK6urtB9evXqJT7Ze/ToEdq1a4e2bdsiMDBQLJOWliZuJyYmittaWlpYuHAhVq1aBXNzcwDA48ePceDAAYVi+dwolNCdP38e06ZNg4mJCaZMmQKJRCKeMzU1RZUqVXDkyBGlBUlERERERCVv+fLlSE5OxpgxY9CgQQOF72Nqaopt27bBxsZGPCYIArp27SruGxgYiNtaWlridpcuXTBkyBB06dIFEyZMEI9fu3ZN4Xg+JwoldGvWrIGDgwP27t2LIUOG5DvftGlTznBJRERERFTG5cwyuWHDBlhbW8Pa2hpz584Vz3t7e8Pa2hrnzp375L0aNGgALy8v+Pn54dChQ7h+/TqGDx8unq9Xr564Xa1aNXE756kcAFSvXl3czj0urzxTKKF78uQJXFxcCj1fqVIlxMTEKBwUERERERF9niwsLNC4cWMYGRnB09NTPO7s7CxuN2vWTNx+9eqVuJ17nF3VqlWLN9AyQqFZLnV1dT86CDE8PBzGxsaKxkRERERERMUoJSUF/v7+ACDVs+7ly5fw8fEBADRu3BhDhgxBx44dpa69f/8+Tp48CQCwsbGBu7s76tevDyB7GYKc8i1btsTOnTvF6yZPngwbGxvY2toiNTUVx44dw/nz5wEAZmZmUksRuLu7Y926dUhLS8OZM2ewZ88emJmZYf369WKZ3N01yzOFEjpHR0ccPXoUI0aMyHcuOjoaBw4cQPv27YscHBERERERKV9MTAymT5+e7/iNGzdw48YNANlrT/fp0ydfmSNHjogJXe3atWWe+fLly5fw8/PLd1xfXx8rV66EoaGheMzc3Bxz5szBjz/+iNTUVCxatEjqGldXV3Tq1Emmej93CiV033zzDQYOHIh+/fqhW7duEAQBf//9N/755x/s378fEokEU6ZMUXasRERERERURvXo0QPq6uqIiIhAcnIyzMzM0KZNG0yYMEFqnFyOIUOGwNzcXFy2IDMzE5aWlujbty+GDh0KQRBU8CpKH4USujp16mDPnj34+eefsXLlSkgkErH/a8uWLfG///0PFhYWct/3+fPn8PT0REBAAJ48eYI6deqI2X+OYcOGid8a5Obt7Y26desq8nKIiIiIiMoVCwsLPH78WKFr+/TpU+CTu0/dd+zYsRg7dqxcdTk7O0uNraP8FErogOxZaLZt24b4+Hg8f/4cEokENWrUgKmpqcLBPHnyBP7+/mjSpAmysrKklkPIrVmzZpg9e7bUMUUSSCIiIiIiorJMroTu8uXL2L59OyIiImBsbAwXFxeMGDECdnZ2SgmmQ4cOYl/YOXPmSC00mJuhoSGaNm2qlDqJiIiIiIjKKpkTuhs3bmD8+PGQSCQwMTFBeHg4AgICEBkZie+++04pwaipKbSKAhERERERUbkkc0K3YcMGVKxYEVu2bEH9+vURHx+P6dOnY8+ePfj666+ho6NTnHFKuXHjBpo2bYrMzEw0adIE06dPR4sWLYp0T4lEguTkZIWuFQQBurq6RaqfPh8pKSmFdhcuTmyHlINtkEoDtkNSNVW1wRycsIMAKNwGJRKJzG1I5oQuODgYX331lbjGhJGREWbMmIEBAwbgyZMnaNy4sULByqtFixZwd3dH7dq1ERUVBU9PT4waNQo7d+6Evb29wvdNT0+XWoNDHrq6urCxsVG4bvq8PH369KPrNBYXtkPKwTZIpQHbIamaqtogAGhqasLGxgYaGgpPV0GfgYyMDDx8+BDp6ekKXa+lpSVTOZlb2du3b/NNPJKz//79ezlCK5qvv/5aat/Z2Rlubm5Yu3YtNm3apPB9NTU1YWVlpdC1/AaGcrO0tFTZt9JEANsglQ5sh6RqqmqDQHY71NDQwPz58/H06VOVxECqZWlpicWLF6NevXoKtcOQkBCZy8qc0BX02C9nX5WPs/X09NCuXTv4+voW6T6CIEBPT09JUVF5xq4+pGpsg1QasB2SqpWGNvj06VOFlwagz4Oi7VCeL6fkeg589OhRBAQEiPupqakQBAG7d+8ucNX3+fPny3N7IiIiIiIikoNcCd2VK1dw5cqVfMfPnTuX75ggCCWS0CUnJ+PixYslNoaPiIiIiIiotJA5oXv06FFxxgEgezYif39/AMDLly+RlJQEHx8fAEDLli0RFhaGzZs3o3PnzjA3N0dUVBS2bt2K6OhorFy5stjjIyIiIiIiKk1K1dQ7MTExmD59utSxnP0dO3agatWqSE9Pxx9//IG4uDjo6urC3t4eixYtUtri5kRERERERGVFqUroLCwsPjlw1NPTs4SiISIiIiIiKt3UVB0AERERERERKYYJHRERERERURnFhI6IiIiIiKiMYkJHRERERERURik1oQsPD0doaKgyb0lERERERESFUCih27FjBzw8PKSOzZ07F126dIGbmxv69OmDmJgYpQRIREREREREBVMooTt48CAqVqwo7l++fBleXl4YMGAA5s+fj4iICKxevVppQRIREREREVF+Cq1D9+rVK9StW1fcP336NCwsLLBo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2Nh8521tbbFz505Fbv1RRkZGAIDExESYmZmJxxMSEqTOK0IQBOjp6RUtQCKAXSxI5dgGqTRgOyRVYxuk0kDRdijPlwIKTYry/PlztG3bttDzxsbGiIuLU+TWH1WnTh0A/42lyxEWFgZNTU3UqFFD6XUSERERERGVVgoldIaGhgU+mcsREhIi9QRNWWrUqIHatWvDx8dH6ri3tzecnJxk7mdKRERERET0OVCoy2Xbtm1x4MABfPXVV/nOPXnyBAcPHkTfvn3lvm9KSgr8/f0BAC9fvkRSUpKYvLVs2RKmpqaYNm0aZs2ahZo1a8LR0RHe3t64d+8edu3apchLISIiIiIiKrMUSui++eYbDBgwAG5ubmjfvj0EQcDRo0dx+PBhnDlzBmZmZpg8ebLc942JicH06dOljuXs79ixA46OjnBzc0NKSgo2bdqEjRs3wtLSEqtXr4a9vb0iL4WIiIiIiKjMUiihq1KlCo4cOYIVK1bg9OnTkEgkOHbsGCpUqABXV1fMmjVLoTXpLCws8Pjx40+W69+/P/r3769I6ERERERERJ8Nhdehq1ixIn7++Wf8/PPPePfuHbKysmBqago1NYWG5REREREREZGcFE7oclPkaRwREREREREVjUIJ3erVqz96XhAEaGtro2rVqmjRogWqVKmiUHBERERERERUOIUTupzF7vKufJ73uLq6Ovr374+FCxeyOyYREREREZESKZTQ+fv7Y8KECWjYsCGGDRuGmjVrAshecHzXrl14/Pgx/vjjDyQnJ2P79u3Yv38/KleurNDMl0RERERERFQwhR6ZLVq0CHXq1MHSpUthY2MDfX196Ovrw9bWFkuXLkWtWrWwfPlyNGzYEMuWLUPr1q1x7NgxZcdORERERERUrimU0P3zzz9o0aJFoedbtGiBK1euiPvt2rXDq1evFKmKiIiIiIiICqFQQqelpYV79+4Vej4gIACamprifkZGBvT09BSpioiIiIiIiAqh0Bg6Nzc37N69G8bGxhg8eDAsLCwAABEREdizZw+OHz+OIUOGiOWvX78OKysr5URMREREREREABRM6L799lu8ffsWW7duxbZt28TZK7OysiCRSNClSxd8++23AIDU1FTY2tqiWbNmyouaiIiIiIiIFEvotLW18eeff+Lhw4e4fPkyXr58CQAwNzdH69atYWtrK1V26tSpyomWiIiIiIiIRAoldDlsbGxgY2OjrFiIiIiIiIhIDlzpm4iIiIiIqIxS+Amdv78/tm3bhocPHyIxMRESiSRfmaCgoCIFR0RERERERIVT6Amdr68vJk6ciLdv36J79+7IysqCq6srunfvDh0dHVhbW2PKlCnKjpWIiIiIiIhyUegJ3YYNG2BnZ4c9e/YgPj4ee/fuRd++feHk5ISIiAgMHDhQXMqAiIiIiIiIiodCT+hCQ0PRvXt3qKurQ0MjOyfMyMgAAFhYWGDw4MHYtGmT8qIkIiIiIiKifBRK6HR0dKCpqQkAMDQ0hJaWFqKjo8XzlSpVQkREhHIiJCIiIiIiogIplNBZWloiNDRU3G/YsCGOHTuGjIwMpKam4uTJk6hWrZrSgiQiIiIiIqL8FEroOnfuDD8/P6SlpQEAJk6ciBs3bqBFixZo1aoVbt68ifHjxys1UCIiIiIiIpKm0KQoY8aMwZgxY8T99u3bY+fOnThz5gzU1dXRrl07tGrVSmlBEhERERERUX5yJ3RpaWm4fPkyzM3N0aBBA/G4g4MDHBwclBocERERERERFU7uLpeampqYPn067ty5UxzxEBERERERkYzkTugEQUDt2rURGxtbHPEQERERERGRjBSaFGXChAnYvXs3wsLClB0PERERERERyUihSVECAgJgbGyMHj16oGXLljA3N4eOjk6+cvPnzy9ygERERERERFQwhRK6Xbt2idvXrl0rsIwgCEzoiIiIiIiIipFCCd2jR4+UHQcRERERERHJSaExdERERERERKR6Cj2hy3H37l1cv34dMTEx+Oqrr1C7dm2kpKQgLCwMtWvXRoUKFZQVJxEREREREeWhUEKXlpaGGTNmwM/PDxKJBIIgoH379qhduzbU1NQwevRojBw5EpMmTVJ2vERERERERPT/FOpyuXLlSly8eBE//PADfHx8IJFIxHPa2tro1q0b/Pz8lBYkERERERER5adQQnfq1CkMGjQIAwcOhJGRUb7zdevWRXh4eJGDIyIiIiIiosIplNDFxMTA2tq60PPq6ur48OGDwkERERERERHRpymU0FWrVg1hYWGFnr99+zZq1qypcFBERERERET0aQoldG5ubti3bx/u3LkjHhMEAQBw4MABnD59Gr169VJKgERERERERFQwhWa5nDhxIgICAjB06FDUqVMHgiBg6dKliI+Px5s3b9CuXTuMHDlSyaESERERERFRbgoldFpaWti8eTOOHz8OX19fZGVlIS0tDdbW1vjmm2/g7u4uPrEjIiIiIiKi4qHwwuKCIMDd3R3u7u7KjIeIiIiIiIhkpNAYul9//RUPHz5UdixEREREREQkB4USul27dqFv377o0qUL/vzzTzx+/FjZcREREREREdEnKJTQXb16FUuXLkXt2rWxefNm9OrVC66urlizZs1HlzMgIiIiIiIi5VFoDJ2+vj569eqFXr16ISEhAb6+vvDx8cG6deuwevVq1K9fH66urhg/fryy4yUiIiIiIqL/p9ATutwMDQ3Rv39/eHp64vLly5g9ezYiIiLwxx9/KCM+IiIiIiIiKoTCs1zmlp6ejkuXLsHb2xsXLlxAcnIyqlWrpoxbExERERERUSEUTugyMjJw5coVeHt7w8/PD0lJSTAzM0OfPn3QvXt3NGvWTJlxEhERERERUR4KJXTz5s2Dn58f4uPjYWJiAldXV7i6uqJFixZcUJyIiIiIiKiEKJTQ+fn5oVOnTujevTtatWoFdXX1fGXi4+NhZGRU5ACJiIiIiIioYAoldFeuXIGGRv5L09LS4OfnhxMnTuDy5cu4f/9+kQPM68iRI5g7d26+4+PGjcOsWbOUXh8REREREVFppVBClzuZk0gkuHbtGk6cOIGzZ88iKSkJpqamcHNzU1qQBdm8eTMMDAzE/SpVqhRrfURERERERKWNwpOiBAYG4sSJEzh16hTevn0LQRDQvXt3DB06FE2bNi32sXS2trYwNTUt1jqIiIiIiIhKM7kSuvDwcBw/fhwnTpzA8+fPUaVKFfTo0QN2dnbw8PBA165dYW9vX1yxEhERERERUS4yJ3QDBw7EvXv3YGJigq5du2Lx4sVwcHAAALx48aLYAiyMm5sbYmNjUb16dQwYMABjx44tcHIWWUkkEiQnJyt0rSAI0NXVVbhu+rykpKRAIpGUeL1sh5SDbZBKA7ZDUjVVtUGA7ZD+o2g7lEgkMvd4lDmhCwgIgIWFBebMmQNnZ+cCJ0UpCWZmZpg2bRqaNGkCQRBw/vx5/Pnnn4iMjMTChQsVvm96ejqCgoIUulZXVxc2NjYK102fl6dPnyIlJaXE62U7pBxsg1QasB2SqqmqDQJsh/SforRDLS0tmcrJnJUtWLAAJ0+exNSpU2FkZISuXbuie/fucHR0VChARbVp0wZt2rQR91u3bg1tbW1s374dEydOROXKlRW6r6amJqysrBS6lmvvUW6WlpYq+1aaCGAbpNKB7ZBUTVVtEGA7pP8o2g5DQkJkLitzQjdkyBAMGTIE4eHhOHHiBE6ePIkDBw6gUqVKcHR0hCAIKmu8Li4u2LJlC4KCghRO6ARBgJ6enpIjo/KIXSxI1dgGqTRgOyRVYxuk0kDRdihPXqUm781r1KiByZMnw9vbG4cOHYKrqytu3LgBiUSCRYsWYcGCBbhw4QJSU1PlvTURERERERHJoUgD4Ro1aoRGjRph9uzZ+Oeff3D8+HF4e3vj4MGD0NXVxZ07d5QV50d5e3tDXV2dfZWJiIiIiKhcUcrMJmpqavjiiy/wxRdfYNGiRfDz88OJEyeUcet8xowZA0dHR1hbWwMA/Pz8cODAAQwfPhxmZmbFUicREREREVFppPSpKrW1tdG9e3d0795d2bcGkD2w8PDhw3jz5g2ysrJQu3ZtzJs3D8OGDSuW+oiIiIiIiEor1aw9UATz589XdQhERERERESlgtyTohAREREREVHpwISOiIiIiIiojGJCR0REREREVEYxoSMiIiIiIiqjmNARERERERGVUUzoiIiIiIiIyigmdERERERERGUUEzoiIiIiIqIyigkdERERERFRGcWEjoiIiIiIqIxiQkdERERERFRGMaEjIiIiIiIqo5jQERERERERlVFM6IiIiIiIiMooJnRERERERERlFBM6IiIiIiKiMooJHRERERERURnFhI6IiIiIiKiMYkJHRERERERURjGhIyIiIiIiKqOY0BEREREREZVRTOiIiIiIiIjKKCZ0REREREREZRQTOiIiIiIiojKKCR0REREREVEZxYSOiIiIiIiojGJCR0REREREVEYxoSMiIiIiIiqjmNARERERERGVUUzoiIiIiIiIyigmdERERERERGUUEzoiIiIiIqIyigkdERERERFRGcWEjoiIiIiIqIxiQkdERERERFRGaag6AFK9t69f4bfZE5GRliZ1vLFja4z0mC/TPZ4EBmDj0nnIysyUOt6+5wC4fTU6X/k/v/8a4aHBUsf0Kuhj7qod0NPTk/MVEBERERGVT3xCV87Fx8djqcfofMkcANy//jf+/H76J+/xJDAA6xfPzpfMAcCF4wewd+1yqWMLxw/Kl8wBQPL7JCwc01eO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\n"
+          },
+          "metadata": {}
+        }
+      ],
+      "source": [
+        "import matplotlib.pyplot as plt\n",
+        "import pandas as pd\n",
+        "import seaborn as sns\n",
+        "\n",
+        "# 1. Set visualization styling\n",
+        "sns.set_theme(style=\"whitegrid\")\n",
+        "\n",
+        "# 2. Load the dataset (Make sure the file name matches exactly what is uploaded in Colab)\n",
+        "file_name = \"auto-mpg (1) (1) (2).csv\"\n",
+        "try:\n",
+        "    df = pd.read_csv(file_name)\n",
+        "    print(\"✓ Dataset successfully loaded!\\n\")\n",
+        "except FileNotFoundError:\n",
+        "    print(\n",
+        "        f\"✗ Error: Could not find '{file_name}'. Please ensure you have uploaded the CSV file to your Colab files sidebar.\"\n",
+        "    )\n",
+        "\n",
+        "# 3. Clean Missing Data\n",
+        "# The horsepower column has 6 missing values. We fill them using the column median.\n",
+        "df[\"horsepower\"] = df[\"horsepower\"].fillna(df[\"horsepower\"].median())\n",
+        "\n",
+        "# 4. Display Quick Fleet Summary Statistics\n",
+        "print(\"=== FLEET SUMMARY STATISTICS ===\")\n",
+        "print(df[[\"mpg\", \"horsepower\", \"weight\", \"acceleration\"]].describe())\n",
+        "print(\"\\n\" + \"=\" * 40 + \"\\n\")\n",
+        "\n",
+        "# 5. Grouped Data Analysis\n",
+        "print(\"=== AVERAGE PERFORMANCE BY CYLINDER COUNT ===\")\n",
+        "summary = (\n",
+        "    df.groupby(\"cylinders\")[[\"mpg\", \"horsepower\", \"weight\"]]\n",
+        "    .mean()\n",
+        "    .reset_index()\n",
+        ")\n",
+        "# Rename columns for clear display output\n",
+        "summary.columns = [\n",
+        "    \"Cylinders\",\n",
+        "    \"Avg MPG\",\n",
+        "    \"Avg Horsepower\",\n",
+        "    \"Avg Weight (lbs)\",\n",
+        "]\n",
+        "print(summary.to_string(index=False))\n",
+        "print(\"\\n\" + \"=\" * 40 + \"\\n\")\n",
+        "\n",
+        "# 6. Generate Data Visualization Chart\n",
+        "print(\"Generating visualization chart...\")\n",
+        "plt.figure(figsize=(9, 5))\n",
+        "ax = sns.barplot(\n",
+        "    data=summary, x=\"Cylinders\", y=\"Avg MPG\", palette=\"Blues_d\", hue=\"Cylinders\"\n",
+        ")\n",
+        "\n",
+        "# Customize chart details\n",
+        "plt.title(\n",
+        "    \"Impact of Engine Size (Cylinders) on Fuel Efficiency\",\n",
+        "    fontsize=14,\n",
+        "    pad=15,\n",
+        "    fontweight=\"bold\",\n",
+        ")\n",
+        "plt.xlabel(\"Number of Cylinders\", fontsize=12)\n",
+        "plt.ylabel(\"Average Miles Per Gallon (MPG)\", fontsize=12)\n",
+        "\n",
+        "# Display value labels on top of each bar\n",
+        "for p in ax.patches:\n",
+        "    ax.annotate(\n",
+        "        format(p.get_height(), \".2f\"),\n",
+        "        (p.get_x() + p.get_width() / 2.0, p.get_height()),\n",
+        "        ha=\"center\",\n",
+        "        va=\"center\",\n",
+        "        xytext=(0, 8),\n",
+        "        textcoords=\"offset points\",\n",
+        "        fontweight=\"bold\",\n",
+        "    )\n",
+        "\n",
+        "plt.tight_layout()\n",
+        "plt.show()"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 24,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "DvZaYlOxjPIp",
+        "outputId": "e3f05d54-60b9-487e-ec22-57558108beab"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Training data shape: (318, 5)\n",
+            "Testing data shape: (80, 5)\n"
+          ]
+        }
+      ],
+      "source": [
+        "# Select the columns we want to use for prediction (Features)\n",
+        "X = df[['cylinders', 'displacement', 'horsepower', 'weight', 'acceleration']]\n",
+        "\n",
+        "# Select the column we want to predict (Target)\n",
+        "y = df['mpg']\n",
+        "from sklearn.model_selection import train_test_split\n",
+        "\n",
+        "# Splitting 80% data for training and 20% for testing\n",
+        "X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n",
+        "\n",
+        "print(\"Training data shape:\", X_train.shape)\n",
+        "print(\"Testing data shape:\", X_test.shape)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 25,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "R1V6NBe-j9ht",
+        "outputId": "b24ae827-1705-4b43-ccbd-eda1965f779d"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Model Training Completed Successfully!\n"
+          ]
+        }
+      ],
+      "source": [
+        "from sklearn.linear_model import LinearRegression\n",
+        "\n",
+        "# Create the model object\n",
+        "model = LinearRegression()\n",
+        "\n",
+        "# Train the model using training data\n",
+        "model.fit(X_train, y_train)\n",
+        "\n",
+        "print(\"Model Training Completed Successfully!\")"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 26,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Z1GMYaGhkOYG",
+        "outputId": "2b120405-7961-4294-c6da-67825ca473af"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "<function r2_score at 0x7a3091c7ea20>\n",
+            "Model Accuracy (R2 Score): 0.73\n"
+          ]
+        }
+      ],
+      "source": [
+        "from sklearn.metrics import r2_score\n",
+        "\n",
+        "# Make predictions on the test data\n",
+        "y_pred = model.predict(X_test)\n",
+        "\n",
+        "# Check the R2 Score (Accuracy score between 0 and 1)\n",
+        "accuracy = r2_score(y_test, y_pred)\n",
+        "print(r2_score) # This will print a function or you can use the next line\n",
+        "print(f\"Model Accuracy (R2 Score): {accuracy:.2f}\")"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import pandas as pd\n",
+        "\n",
+        "# Create data directly as a list of rows to avoid any sorting or order issues\n",
+        "new_car_df = pd.DataFrame([[4, 150, 90, 2500, 15]],\n",
+        "                          columns=['cylinders', 'displacement', 'horsepower', 'weight', 'acceleration'])\n",
+        "\n",
+        "# Use your trained model to predict the MPG (Mileage)\n",
+        "predicted_mpg = model.predict(new_car_df)\n",
+        "\n",
+        "# Print the final correct result\n",
+        "print(f\"The predicted mileage (MPG) for this new car is: {predicted_mpg[0]:.2f}\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "ydVlbjCwpqAp",
+        "outputId": "f0faf4ec-a20a-421d-d3eb-ce9ad32cabf4"
+      },
+      "execution_count": 27,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "The predicted mileage (MPG) for this new car is: 27.17\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import joblib\n",
+        "\n",
+        "# अपने ट्रेंड मॉडल को फाइल के रूप में सेव करें\n",
+        "joblib.dump(model, 'car_mileage_model.pkl')\n",
+        "\n",
+        "# अगर आपने ट्रेनिंग के दौरान StandardScaler (scaler) का इस्तेमाल किया था, तो उसे भी सेव करें:\n",
+        "# joblib.dump(scaler, 'scaler.pkl')"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "0hUzsT-sr4jv",
+        "outputId": "b855ea76-afe0-4f3d-eb96-81262c8dd051"
+      },
+      "execution_count": 28,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "['car_mileage_model.pkl']"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 28
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Install streamlit, joblib, and pyngrok (for creating a live link)\n",
+        "!pip install streamlit joblib pyngrok -q"
+      ],
+      "metadata": {
+        "id": "fNuvB_b-utCY"
+      },
+      "execution_count": 33,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "%%writefile app.py\n",
+        "import streamlit as st\n",
+        "import joblib\n",
+        "import pandas as pd\n",
+        "\n",
+        "# 1. Load the saved machine learning model\n",
+        "# Make sure 'car_mileage_model.pkl' is uploaded to your Colab files section (left sidebar)\n",
+        "model = joblib.load('car_mileage_model.pkl')\n",
+        "\n",
+        "# 2. Set up the Web App Title and Description\n",
+        "st.title(\"🚗 Car Mileage (MPG) Prediction App\")\n",
+        "st.write(\"Enter the vehicle specifications below to predict its fuel efficiency (MPG):\")\n",
+        "\n",
+        "# 3. Create input fields for the user\n",
+        "cylinders = st.number_input(\"Cylinders\", min_value=3, max_value=8, value=4, step=1)\n",
+        "displacement = st.number_input(\"Displacement (cc)\", min_value=60.0, max_value=500.0, value=150.0, step=10.0)\n",
+        "horsepower = st.number_input(\"Horsepower (hp)\", min_value=40.0, max_value=300.0, value=90.0, step=5.0)\n",
+        "weight = st.number_input(\"Weight (lbs)\", min_value=1500.0, max_value=5000.0, value=2500.0, step=50.0)\n",
+        "acceleration = st.number_input(\"Acceleration\", min_value=8.0, max_value=25.0, value=15.0, step=0.5)\n",
+        "\n",
+        "# 4. Create a button to trigger the prediction\n",
+        "if st.button(\"Predict Mileage\"):\n",
+        "    input_data = pd.DataFrame(\n",
+        "        [[cylinders, displacement, horsepower, weight, acceleration]],\n",
+        "        columns=['cylinders', 'displacement', 'horsepower', 'weight', 'acceleration']\n",
+        "    )\n",
+        "\n",
+        "    prediction = model.predict(input_data)\n",
+        "    st.success(f\"The predicted mileage for this car is: {prediction[0]:.2f} MPG\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "bkwA09I-vHRP",
+        "outputId": "6386fd6f-660b-461b-b431-9a8c7d3ef85d"
+      },
+      "execution_count": 34,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Writing app.py\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!wget -qO- ipv4.icanhazip.com"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "c2jvdpX5vqok",
+        "outputId": "ba288174-2a94-4731-d516-af4fa6c95c40"
+      },
+      "execution_count": 35,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "34.124.211.143\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# 1. Install pyngrok tool\n",
+        "!pip install pyngrok\n",
+        "\n",
+        "# 2. Forcefully set token using terminal command (No prompt box can stop this)\n",
+        "# Replace '3EClvRf3y1A18IEBoI7c6cfI4q0_2pXfAdFvdNMGQ5L832Mo1' with your actual token\n",
+        "!ngrok config add-authtoken 3EClvRf3y1A18IEBoI7c6cfI4q0_2pXfAdFvdNMGQ5L832Mo1\n",
+        "\n",
+        "# 3. Run Streamlit in background\n",
+        "!streamlit run app.py --server.port 8501 &\n",
+        "\n",
+        "# 4. Connect and print the link directly\n",
+        "from pyngrok import ngrok\n",
+        "public_url = ngrok.connect(8501)\n",
+        "print(\"Your error-free app link is here 👇\")\n",
+        "print(public_url)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "HkYonSzO88qD",
+        "outputId": "585f9a95-e87b-4203-e5c6-fd1105d8d3b2"
+      },
+      "execution_count": 4,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Requirement already satisfied: pyngrok in /usr/local/lib/python3.12/dist-packages (8.1.2)\n",
+            "Requirement already satisfied: PyYAML>=5.1 in /usr/local/lib/python3.12/dist-packages (from pyngrok) (6.0.3)\n",
+            "Authtoken saved to configuration file: /root/.config/ngrok/ngrok.yml\n",
+            "\n",
+            "Collecting usage statistics. To deactivate, set browser.gatherUsageStats to false.\n",
+            "\u001b[0m\n",
+            "2026-05-25 07:15:44.422 Port 8501 is not available\n",
+            "Your error-free app link is here 👇\n",
+            "NgrokTunnel: \"https://circle-pamphlet-unwieldy.ngrok-free.dev\" -> \"http://localhost:8501\"\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import subprocess\n",
+        "from pyngrok import ngrok\n",
+        "\n",
+        "# Step 1: Kill any previous stuck connections\n",
+        "ngrok.kill()\n",
+        "\n",
+        "# Step 2: Run Streamlit safely in the background using subprocess (No freezing)\n",
+        "print(\"Starting Streamlit app...\")\n",
+        "subprocess.Popen([\"streamlit\", \"run\", \"app.py\", \"--server.port\", \"8501\"])\n",
+        "\n",
+        "# Step 3: Connect ngrok tunnel immediately\n",
+        "print(\"Generating your secure link...\")\n",
+        "public_url = ngrok.connect(8501)\n",
+        "\n",
+        "print(\"\\nYOUR ERROR-FREE APP LINK IS READY 👇\")\n",
+        "print(public_url)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "6KijnH-y_DzT",
+        "outputId": "525f0304-6026-4fee-a9ee-dc38e35bf7e0"
+      },
+      "execution_count": 3,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Starting Streamlit app...\n",
+            "Generating your secure link...\n",
+            "\n",
+            "YOUR ERROR-FREE APP LINK IS READY 👇\n",
+            "NgrokTunnel: \"https://circle-pamphlet-unwieldy.ngrok-free.dev\" -> \"http://localhost:8501\"\n"
+          ]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyP8O+0g84q1nQpxALo9Fkxe",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "display_name": "Python 3",
+      "name": "python3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 0
+}
